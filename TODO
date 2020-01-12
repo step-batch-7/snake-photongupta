@@ -5,7 +5,7 @@
 
 --DONE-- * Create a key listener on the grid so that the snake can move
 --DONE-- * Move the snake one cell at a time from left to right
---DONE-- * Extract a Snake class that is responsible for snake's behaviour
+--DONE-- * Extract a Snake class that is responsible for snake's behavior
 --DONE-- * Create a ghost snake that randomly roams around
 
 --DONE-- * Extract a Direction class that is responsible for the direction 
@@ -20,6 +20,9 @@
 --Done-- * Generate random food 
 
 --DONE-- * Allow snake to eat food when food becomes available
+
 --DONE-- * Upon eating the food, snake should grow tall
+
+--DONE-- * Add a scoring mechanism
+
 * If snake touches itself or the walls, the game should be over
-* Add a scoring mechanism
