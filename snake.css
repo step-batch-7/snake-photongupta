@@ -2,6 +2,10 @@ h1 {
   text-align: center;
 }
 
+element {
+  margin-left: 25vw;
+}
+
 #grid {
   width: 800px;
   display: flex;
@@ -54,8 +58,4 @@ h1 {
 
 .status {
   text-align: center;
-}
-
-element {
-  margin-left: 25vw;
 }

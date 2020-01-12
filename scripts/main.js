@@ -158,11 +158,11 @@ const updateSnakeAndFoodPosition = function(game) {
   showScore(game.score);
 };
 
-const checkStatus = function(game, timeId, ghostTimeId) {
+const checkStatus = function(game, timeIntervalId, ghostTimeIntervalId) {
   if (game.isOver()) {
     displayGameOverPanel(game.score);
-    clearInterval(timeId);
-    clearInterval(ghostTimeId);
+    clearInterval(timeIntervalId);
+    clearInterval(ghostTimeIntervalId);
   }
 };
 
@@ -180,14 +180,14 @@ const main = function() {
 
   setup(game);
 
-  const timeId = setInterval(() => {
+  const timeIntervalId = setInterval(() => {
+    checkStatus(game, timeIntervalId, ghostTimeIntervalId);
     updateSnakeAndFoodPosition(game);
-    checkStatus(game, timeId, ghostTimeId);
-  }, 100);
+  }, 200);
 
   let ghostSnakeHead = EAST;
 
-  const ghostTimeId = setInterval(() => {
+  const ghostTimeIntervalId = setInterval(() => {
     switch (ghostSnakeHead) {
       case EAST:
         game.ghostSnake.turnLeft();

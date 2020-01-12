@@ -24,8 +24,15 @@ class Game {
     this.score.increaseScore();
   }
 
+  hadTouchedBoundaries() {
+    const [headX, headY] = this.snake.head;
+    const hadTouchedVerticalWalls = headX < 0 || headX > 99;
+    const hadTouchedHorizontalWalls = headY < 0 || headY > 59;
+    return hadTouchedHorizontalWalls || hadTouchedVerticalWalls;
+  }
+
   isOver() {
-    return this.snake.hadTouchedBody();
+    return this.snake.hadTouchedBody() || this.hadTouchedBoundaries();
   }
 
   updateGame() {
