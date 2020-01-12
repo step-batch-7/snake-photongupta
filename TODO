@@ -15,6 +15,7 @@
 
 --DONE-- * Change color of ghost snake
 
+--DONE-- * Add left, right, up and down movement of snake using respective arrow keys.
 
 * Generate food periodically
 * Allow snake to eat food when food becomes available

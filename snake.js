@@ -17,8 +17,28 @@ class Direction {
     return this.deltas[this.heading];
   }
 
+  turnRight() {
+    if (this.heading == NORTH || this.heading == SOUTH) {
+      this.heading = EAST;
+    }
+  }
+
   turnLeft() {
-    this.heading = (this.heading + 1) % 4;
+    if (this.heading == NORTH || this.heading == SOUTH) {
+      this.heading = WEST;
+    }
+  }
+
+  turnUp() {
+    if (this.heading == EAST || this.heading == WEST) {
+      this.heading = NORTH;
+    }
+  }
+
+  turnDown() {
+    if (this.heading == WEST || this.heading == EAST) {
+      this.heading = SOUTH;
+    }
   }
 }
 
@@ -42,6 +62,17 @@ class Snake {
     this.direction.turnLeft();
   }
 
+  turnRight() {
+    this.direction.turnRight();
+  }
+
+  turnUp() {
+    this.direction.turnUp();
+  }
+
+  turnDown() {
+    this.direction.turnDown();
+  }
   move() {
     const [headX, headY] = this.positions[this.positions.length - 1];
     this.previousTail = this.positions.shift();
@@ -93,7 +124,24 @@ const drawSnake = function(snake) {
 };
 
 const handleKeyPress = snake => {
-  snake.turnLeft();
+  const input = event.key;
+  switch (input) {
+    case 'ArrowLeft':
+      snake.turnLeft();
+      break;
+
+    case 'ArrowRight':
+      snake.turnRight();
+      break;
+
+    case 'ArrowUp':
+      snake.turnUp();
+      break;
+
+    case 'ArrowDown':
+      snake.turnDown();
+      break;
+  }
 };
 
 const moveAndDrawSnake = function(snake) {
