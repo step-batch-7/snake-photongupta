@@ -24,6 +24,10 @@ class Game {
     this.score.increaseScore();
   }
 
+  isOver() {
+    return this.snake.hadTouchedBody();
+  }
+
   updateGame() {
     if (this.hasFoodEaten()) {
       this.increaseSnakeLength();

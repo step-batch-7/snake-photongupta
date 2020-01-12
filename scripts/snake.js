@@ -40,10 +40,19 @@ class Snake {
   }
 
   increaseLength(food) {
-    this.positions.push(food);
+    this.positions.unshift(food);
   }
 
   get head() {
     return this.positions[this.positions.length - 1];
+  }
+
+  hadTouchedBody() {
+    const body = this.positions.slice(0, -1);
+    const head = body.pop();
+    const hasTouched = body.some(
+      position => JSON.stringify(position) == JSON.stringify(head)
+    );
+    return hasTouched;
   }
 }

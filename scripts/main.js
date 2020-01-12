@@ -31,9 +31,16 @@ const createGrids = function() {
   }
 };
 
-const updateScore = function(scoreBoard) {
+const showScore = function(scoreBoard) {
   const scoreBox = document.getElementsByClassName('score');
   scoreBox[0].innerText = `score : ${scoreBoard.score}`;
+};
+
+const displayGameOverPanel = function(scoreBoard) {
+  const panel = document.getElementsByClassName('gameOver');
+  const panelContent = document.getElementsByClassName('status');
+  panel[0].style.marginTop = `0vw`;
+  panelContent[0].innerText = `GameOver...\nYour score:${scoreBoard.score}`;
 };
 
 const eraseTail = function(snake) {
@@ -136,19 +143,27 @@ const moveAndDrawSnake = function(snake) {
   drawSnake(snake);
 };
 
-const updateFood = function(game) {
+const updateFoodIfEaten = function(game) {
   if (game.hasFoodEaten()) {
     removeFood(game.food);
     game.updateGame();
     drawFood(game.food);
-    updateScore(game.score);
   }
 };
 
 const updateSnakeAndFoodPosition = function(game) {
   moveAndDrawSnake(game.snake);
   moveAndDrawSnake(game.ghostSnake);
-  updateFood(game);
+  updateFoodIfEaten(game);
+  showScore(game.score);
+};
+
+const checkStatus = function(game, timeId, ghostTimeId) {
+  if (game.isOver()) {
+    displayGameOverPanel(game.score);
+    clearInterval(timeId);
+    clearInterval(ghostTimeId);
+  }
 };
 
 const setup = function(game) {
@@ -157,7 +172,7 @@ const setup = function(game) {
   drawSnake(game.snake);
   drawSnake(game.ghostSnake);
   drawFood(game.food);
-  updateScore(game.score);
+  showScore(game.score);
 };
 
 const main = function() {
@@ -165,13 +180,14 @@ const main = function() {
 
   setup(game);
 
-  setInterval(() => {
+  const timeId = setInterval(() => {
     updateSnakeAndFoodPosition(game);
+    checkStatus(game, timeId, ghostTimeId);
   }, 100);
 
   let ghostSnakeHead = EAST;
 
-  setInterval(() => {
+  const ghostTimeId = setInterval(() => {
     switch (ghostSnakeHead) {
       case EAST:
         game.ghostSnake.turnLeft();
@@ -190,5 +206,5 @@ const main = function() {
         break;
     }
     ghostSnakeHead = (ghostSnakeHead + 1) % 4;
-  }, 200);
+  }, 500);
 };

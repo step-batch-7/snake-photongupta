@@ -25,4 +25,6 @@
 
 --DONE-- * Add a scoring mechanism
 
-* If snake touches itself or the walls, the game should be over
+--DONE-- * If snake touches itself the game should be over
+
+* If snake touches any of the four wall the game should be over
