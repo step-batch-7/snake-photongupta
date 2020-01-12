@@ -31,6 +31,11 @@ const createGrids = function() {
   }
 };
 
+const updateTimeLeft = function(count) {
+  const timer = document.getElementsByClassName('timer');
+  timer[0].innerText = `Time Left: ${count}s`;
+};
+
 const showScore = function(scoreBoard) {
   const scoreBox = document.getElementsByClassName('score');
   scoreBox[0].innerText = `score : ${scoreBoard.score}`;
@@ -129,12 +134,17 @@ const initSnake = function() {
   );
 };
 
+const getTimeLimit = function() {
+  return 30;
+};
+
 const initializeGame = function() {
   const snake = initSnake();
   const ghostSnake = initGhostSnake();
   const food = initFood();
   const score = new Score();
-  return new Game(snake, ghostSnake, food, score);
+  const seconds = getTimeLimit();
+  return new Game(snake, ghostSnake, food, score, seconds);
 };
 
 const moveAndDrawSnake = function(snake) {
@@ -179,7 +189,7 @@ const main = function() {
   const game = initializeGame();
 
   setup(game);
-
+  game.setTimer();
   const timeIntervalId = setInterval(() => {
     checkStatus(game, timeIntervalId, ghostTimeIntervalId);
     updateSnakeAndFoodPosition(game);

@@ -1,9 +1,10 @@
 class Game {
-  constructor(snake, ghostSnake, food, score) {
+  constructor(snake, ghostSnake, food, score, timeLimit) {
     this.snake = snake;
     this.ghostSnake = ghostSnake;
     this.food = food;
     this.score = score;
+    this.timeLimit = timeLimit;
   }
 
   hasFoodEaten() {
@@ -31,8 +32,23 @@ class Game {
     return hadTouchedHorizontalWalls || hadTouchedVerticalWalls;
   }
 
+  setTimer() {
+    setInterval(() => {
+      updateTimeLeft(this.timeLimit);
+      this.timeLimit--;
+    }, 1000);
+  }
+
+  isTimeOut() {
+    return this.timeLimit == 0;
+  }
+
   isOver() {
-    return this.snake.hadTouchedBody() || this.hadTouchedBoundaries();
+    return (
+      this.snake.hadTouchedBody() ||
+      this.hadTouchedBoundaries() ||
+      this.isTimeOut()
+    );
   }
 
   updateGame() {
