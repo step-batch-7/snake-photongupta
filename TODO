@@ -17,7 +17,8 @@
 
 --DONE-- * Add left, right, up and down movement of snake using respective arrow keys.
 
-* Generate food periodically
+--Done-- * Generate random food 
+
 * Allow snake to eat food when food becomes available
 * Upon eating the food, snake should grow tall
 * If snake touches itself or the walls, the game should be over

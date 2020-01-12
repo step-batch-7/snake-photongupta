@@ -91,8 +91,9 @@ const GRID_ID = 'grid';
 const getGrid = () => document.getElementById(GRID_ID);
 const getCellId = (colId, rowId) => colId + '_' + rowId;
 
-const getCell = (colId, rowId) =>
-  document.getElementById(getCellId(colId, rowId));
+const getCell = (colId, rowId) => {
+  return document.getElementById(getCellId(colId, rowId));
+};
 
 const createCell = function(grid, colId, rowId) {
   const cell = document.createElement('div');
@@ -121,6 +122,12 @@ const drawSnake = function(snake) {
     const cell = getCell(colId, rowId);
     cell.classList.add(snake.species);
   });
+};
+
+const drawFood = function(food) {
+  const [colId, rowId] = food.position;
+  const cell = getCell(colId, rowId);
+  cell.classList.add('food');
 };
 
 const handleKeyPress = snake => {
@@ -154,6 +161,18 @@ const attachEventListeners = snake => {
   document.body.onkeydown = handleKeyPress.bind(null, snake);
 };
 
+class Food {
+  constructor(position) {
+    this.position = position.slice();
+  }
+}
+
+const getRandomFood = function() {
+  const foodColNo = Math.round(Math.random() * 60);
+  const foodRowNo = Math.round(Math.random() * 100);
+  return [foodRowNo, foodColNo];
+};
+
 const main = function() {
   const snake = new Snake(
     [
@@ -175,9 +194,12 @@ const main = function() {
     'ghost'
   );
 
+  const foodPosition = getRandomFood();
+  const food = new Food(foodPosition);
   attachEventListeners(snake);
   createGrids();
   drawSnake(snake);
+  drawFood(food);
   drawSnake(ghostSnake);
 
   setInterval(() => {
@@ -185,10 +207,13 @@ const main = function() {
     moveAndDrawSnake(ghostSnake);
   }, 200);
 
+  let ghostSnakeHead = EAST;
+
   setInterval(() => {
-    let x = Math.random() * 100;
-    if (x > 50) {
-      ghostSnake.turnLeft();
-    }
+    if (ghostSnakeHead == EAST) ghostSnake.turnLeft();
+    if (ghostSnakeHead == NORTH) ghostSnake.turnUp();
+    if (ghostSnakeHead == WEST) ghostSnake.turnRight();
+    if (ghostSnakeHead == SOUTH) ghostSnake.turnDown();
+    ghostSnakeHead = (ghostSnakeHead + 1) % 4;
   }, 500);
 };
