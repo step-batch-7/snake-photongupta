@@ -14,20 +14,8 @@ class Snake {
     return this.type;
   }
 
-  turnLeft() {
-    this.direction.turnLeft();
-  }
-
-  turnRight() {
-    this.direction.turnRight();
-  }
-
-  turnUp() {
-    this.direction.turnUp();
-  }
-
-  turnDown() {
-    this.direction.turnDown();
+  turn(direction) {
+    this.direction[direction]();
   }
 
   move() {

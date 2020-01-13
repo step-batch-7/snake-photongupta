@@ -9,9 +9,9 @@ class Game {
   }
 
   hasFoodEaten() {
-    return (
-      JSON.stringify(this.snake.head) === JSON.stringify(this.food.position)
-    );
+    const [colId, rowId] = this.food.position;
+    const [headX, headY] = this.snake.head;
+    return colId == headX && rowId == headY;
   }
 
   hadTouchedBoundaries() {
@@ -40,7 +40,7 @@ class Game {
     );
   }
 
-  updateGame() {
+  update() {
     if (this.hasFoodEaten()) {
       this.snake.increaseLength(this.food.position);
       this.previousFood = this.food.position;
@@ -49,18 +49,11 @@ class Game {
     }
   }
 
-  getScore() {
-    return this.score.score;
-  }
-
   moveSnake(snakeType) {
     this[snakeType].move();
   }
 
   getStatus() {
-    if (this.hasFoodEaten()) {
-      this.updateGame();
-    }
     return {
       snake: {
         positions: this.snake.positions.slice(),
@@ -73,24 +66,12 @@ class Game {
         previousTail: this.ghostSnake.previousTail
       },
       food: this.food.position.slice(),
-      score: this.getScore(),
+      score: this.score.score,
       previousFood: this.previousFood
     };
   }
 
-  snakeTurnLeft(snakeType) {
-    this[snakeType].turnLeft();
-  }
-
-  snakeTurnRight(snakeType) {
-    this[snakeType].turnRight();
-  }
-
-  snakeTurnUp(snakeType) {
-    this[snakeType].turnUp();
-  }
-
-  snakeTurnDown(snakeType) {
-    this[snakeType].turnDown();
+  turn(snakeType, direction) {
+    this[snakeType].turn(direction);
   }
 }

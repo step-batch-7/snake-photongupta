@@ -80,19 +80,19 @@ const handleKeyPress = game => {
   const input = event.key;
   switch (input) {
     case 'ArrowLeft':
-      game.snakeTurnLeft('snake');
+      game.turn('snake', 'turnLeft');
       break;
 
     case 'ArrowRight':
-      game.snakeTurnRight('snake');
+      game.turn('snake', 'turnRight');
       break;
 
     case 'ArrowUp':
-      game.snakeTurnUp('snake');
+      game.turn('snake', 'turnUp');
       break;
 
     case 'ArrowDown':
-      game.snakeTurnDown('snake');
+      game.turn('snake', 'turnDown');
       break;
   }
 };
@@ -178,20 +178,17 @@ const checkGameOver = function(
 
 const main = function() {
   createGrids();
-
   const game = initializeGame();
   const status = game.getStatus();
-
   attachEventListeners(game);
   drawGame(status);
   game.setTimer();
 
   const timeIntervalId = setInterval(() => {
+    game.update();
     const status = game.getStatus();
-
     game.moveSnake('snake');
     game.moveSnake('ghostSnake');
-
     drawGame(status);
     checkGameOver(status, game, timeIntervalId, ghostTimeIntervalId);
   }, 150);
@@ -201,19 +198,19 @@ const main = function() {
   const ghostTimeIntervalId = setInterval(() => {
     switch (ghostSnakeHead) {
       case EAST:
-        game.snakeTurnLeft('ghostSnake');
+        game.turn('ghostSnake', 'turnLeft');
         break;
 
       case WEST:
-        game.snakeTurnRight('ghostSnake');
+        game.turn('ghostSnake', 'turnRight');
         break;
 
       case NORTH:
-        game.snakeTurnUp('ghostSnake');
+        game.turn('ghostSnake', 'turnUp');
         break;
 
       case SOUTH:
-        game.snakeTurnDown('ghostSnake');
+        game.turn('ghostSnake', 'turnDown');
         break;
     }
     ghostSnakeHead = (ghostSnakeHead + 1) % 4;
