@@ -146,20 +146,20 @@ const initializeGame = function() {
   return new Game(snake, ghostSnake, food, score, seconds);
 };
 
-const renderSnake = function(snake) {
+const animateSnake = function(snake) {
   eraseTail(snake);
   drawSnake(snake);
 };
 
-const renderFood = function(status) {
+const animateFood = function(status) {
   removeFood(status.previousFood);
   drawFood(status.food);
 };
 
 const drawGame = function(status) {
-  renderSnake(status.snake);
-  renderSnake(status.ghostSnake);
-  renderFood(status);
+  animateSnake(status.snake);
+  animateSnake(status.ghostSnake);
+  animateFood(status);
   showScore(status.score);
 };
 

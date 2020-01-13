@@ -13,25 +13,25 @@ class Direction {
   }
 
   turnRight() {
-    if (this.heading == NORTH || this.heading == SOUTH) {
+    if (this.heading != WEST) {
       this.heading = EAST;
     }
   }
 
   turnLeft() {
-    if (this.heading == NORTH || this.heading == SOUTH) {
+    if (this.heading != EAST) {
       this.heading = WEST;
     }
   }
 
   turnUp() {
-    if (this.heading == EAST || this.heading == WEST) {
+    if (this.heading != SOUTH) {
       this.heading = NORTH;
     }
   }
 
   turnDown() {
-    if (this.heading == WEST || this.heading == EAST) {
+    if (this.heading != NORTH) {
       this.heading = SOUTH;
     }
   }
