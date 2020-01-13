@@ -8,6 +8,8 @@ const NUM_OF_ROWS = 60;
 
 const GRID_ID = 'grid';
 
+const TIME_LIMIT = 30;
+
 const getGrid = () => document.getElementById(GRID_ID);
 const getCellId = (colId, rowId) => colId + '_' + rowId;
 
@@ -135,16 +137,12 @@ const initSnake = function() {
   );
 };
 
-const getTimeLimit = function() {
-  return 30;
-};
-
 const initializeGame = function() {
   const snake = initSnake();
   const ghostSnake = initGhostSnake();
   const food = initFood();
   const score = new Score();
-  const seconds = getTimeLimit();
+  const seconds = TIME_LIMIT;
   return new Game(snake, ghostSnake, food, score, seconds);
 };
 
@@ -153,57 +151,49 @@ const renderSnake = function(snake) {
   drawSnake(snake);
 };
 
-const updateFoodIfEaten = function(game, food) {
-  if (game.hasFoodEaten()) {
-    removeFood(food);
-    game.updateGame();
-    const newFood = game.getNewFood();
-    drawFood(newFood);
-  }
+const renderFood = function(status) {
+  removeFood(status.previousFood);
+  drawFood(status.food);
 };
 
-const updateSnakeAndFoodPosition = function(game) {
-  game.moveSnake('snake');
-  game.moveSnake('ghostSnake');
-  const setup = game.getStatus();
-  renderSnake(setup.snake);
-  renderSnake(setup.ghostSnake);
-  updateFoodIfEaten(game, setup.food);
-  showScore(setup.score);
+const drawGame = function(status) {
+  renderSnake(status.snake);
+  renderSnake(status.ghostSnake);
+  renderFood(status);
+  showScore(status.score);
 };
 
-const checkStatus = function(game, timeIntervalId, ghostTimeIntervalId) {
+const checkGameOver = function(
+  status,
+  game,
+  timeIntervalId,
+  ghostTimeIntervalId
+) {
   if (game.isOver()) {
-    const score = game.getScore();
-    displayGameOverPanel(score);
+    displayGameOverPanel(status.score);
     clearInterval(timeIntervalId);
     clearInterval(ghostTimeIntervalId);
   }
 };
 
-const drawSetup = function(setup) {
-  drawSnake(setup.snake);
-  drawSnake(setup.ghostSnake);
-  drawFood(setup.food);
-  showScore(setup.score);
-};
-
-const setup = function(game) {
-  createGrids();
-  const setup = game.getStatus();
-  attachEventListeners(game);
-  drawSetup(setup);
-};
-
 const main = function() {
-  const game = initializeGame();
+  createGrids();
 
-  setup(game);
+  const game = initializeGame();
+  const status = game.getStatus();
+
+  attachEventListeners(game);
+  drawGame(status);
   game.setTimer();
 
   const timeIntervalId = setInterval(() => {
-    checkStatus(game, timeIntervalId, ghostTimeIntervalId);
-    updateSnakeAndFoodPosition(game);
+    const status = game.getStatus();
+
+    game.moveSnake('snake');
+    game.moveSnake('ghostSnake');
+
+    drawGame(status);
+    checkGameOver(status, game, timeIntervalId, ghostTimeIntervalId);
   }, 150);
 
   let ghostSnakeHead = EAST;

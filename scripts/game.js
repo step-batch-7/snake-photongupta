@@ -5,24 +5,13 @@ class Game {
     this.food = food;
     this.score = score;
     this.timeLimit = timeLimit;
+    this.previousFood = [0, 0];
   }
 
   hasFoodEaten() {
     return (
       JSON.stringify(this.snake.head) === JSON.stringify(this.food.position)
     );
-  }
-
-  increaseSnakeLength() {
-    this.snake.increaseLength(this.food.position);
-  }
-
-  updateFoodPosition() {
-    this.food.updatePosition();
-  }
-
-  updateScore() {
-    this.score.increaseScore();
   }
 
   hadTouchedBoundaries() {
@@ -53,9 +42,10 @@ class Game {
 
   updateGame() {
     if (this.hasFoodEaten()) {
-      this.increaseSnakeLength();
-      this.updateFoodPosition();
-      this.updateScore();
+      this.snake.increaseLength(this.food.position);
+      this.previousFood = this.food.position;
+      this.food.updatePosition();
+      this.score.increaseScore();
     }
   }
 
@@ -68,6 +58,9 @@ class Game {
   }
 
   getStatus() {
+    if (this.hasFoodEaten()) {
+      this.updateGame();
+    }
     return {
       snake: {
         positions: this.snake.positions.slice(),
@@ -80,7 +73,8 @@ class Game {
         previousTail: this.ghostSnake.previousTail
       },
       food: this.food.position.slice(),
-      score: this.getScore()
+      score: this.getScore(),
+      previousFood: this.previousFood
     };
   }
 
@@ -98,9 +92,5 @@ class Game {
 
   snakeTurnDown(snakeType) {
     this[snakeType].turnDown();
-  }
-
-  getNewFood() {
-    return this.food.position;
   }
 }
