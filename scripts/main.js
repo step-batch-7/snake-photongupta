@@ -36,66 +36,67 @@ const updateTimeLeft = function(count) {
   timer[0].innerText = `Time Left: ${count}s`;
 };
 
-const showScore = function(scoreBoard) {
+const showScore = function(score) {
   const scoreBox = document.getElementsByClassName('score');
-  scoreBox[0].innerText = `score : ${scoreBoard.score}`;
+  scoreBox[0].innerText = `score : ${score}`;
 };
 
 const displayGameOverPanel = function(scoreBoard) {
   const panel = document.getElementsByClassName('gameOver');
   const panelContent = document.getElementsByClassName('status');
   panel[0].style.marginTop = `0vw`;
-  panelContent[0].innerText = `GameOver...\nYour score:${scoreBoard.score}`;
+  panelContent[0].innerText = `GameOver...\nYour score:${scoreBoard}`;
 };
 
 const eraseTail = function(snake) {
   let [colId, rowId] = snake.previousTail;
   const cell = getCell(colId, rowId);
-  cell.classList.remove(snake.species);
+  cell.classList.remove(snake.type);
 };
 
 const drawSnake = function(snake) {
-  snake.location.forEach(([colId, rowId]) => {
+  const {positions, type} = snake;
+  positions.forEach(([colId, rowId]) => {
     const cell = getCell(colId, rowId);
-    cell.classList.add(snake.species);
+    cell.classList.add(type);
   });
 };
 
 const drawFood = function(food) {
-  const [colId, rowId] = food.position;
+  const [colId, rowId] = food;
   const cell = getCell(colId, rowId);
   cell.classList.add('food');
 };
 
 const removeFood = function(food) {
-  const [colId, rowId] = food.position;
+  const [colId, rowId] = food;
   const cell = getCell(colId, rowId);
   cell.classList.remove('food');
 };
 
-const handleKeyPress = snake => {
+const handleKeyPress = game => {
   const input = event.key;
   switch (input) {
     case 'ArrowLeft':
-      snake.turnLeft();
+      game.snakeTurnLeft('snake');
       break;
 
     case 'ArrowRight':
-      snake.turnRight();
+      game.snakeTurnRight('snake');
       break;
 
     case 'ArrowUp':
-      snake.turnUp();
+      game.snakeTurnUp('snake');
       break;
 
     case 'ArrowDown':
-      snake.turnDown();
+      game.snakeTurnDown('snake');
       break;
   }
 };
 
-const attachEventListeners = snake => {
-  document.body.onkeydown = handleKeyPress.bind(null, snake);
+const attachEventListeners = game => {
+  document.body.onkeydown = handleKeyPress.bind(null, game);
 };
 
 const getRandomFood = function() {
@@ -147,42 +148,51 @@ const initializeGame = function() {
   return new Game(snake, ghostSnake, food, score, seconds);
 };
 
-const moveAndDrawSnake = function(snake) {
-  snake.move();
+const renderSnake = function(snake) {
   eraseTail(snake);
   drawSnake(snake);
 };
 
-const updateFoodIfEaten = function(game) {
+const updateFoodIfEaten = function(game, food) {
   if (game.hasFoodEaten()) {
-    removeFood(game.food);
+    removeFood(food);
     game.updateGame();
-    drawFood(game.food);
+    const newFood = game.getNewFood();
+    drawFood(newFood);
   }
 };
 
 const updateSnakeAndFoodPosition = function(game) {
-  moveAndDrawSnake(game.snake);
-  moveAndDrawSnake(game.ghostSnake);
-  updateFoodIfEaten(game);
-  showScore(game.score);
+  game.moveSnake('snake');
+  game.moveSnake('ghostSnake');
+  const setup = game.getStatus();
+  renderSnake(setup.snake);
+  renderSnake(setup.ghostSnake);
+  updateFoodIfEaten(game, setup.food);
+  showScore(setup.score);
 };
 
 const checkStatus = function(game, timeIntervalId, ghostTimeIntervalId) {
   if (game.isOver()) {
-    displayGameOverPanel(game.score);
+    const score = game.getScore();
+    displayGameOverPanel(score);
     clearInterval(timeIntervalId);
     clearInterval(ghostTimeIntervalId);
   }
 };
 
+const drawSetup = function(setup) {
+  drawSnake(setup.snake);
+  drawSnake(setup.ghostSnake);
+  drawFood(setup.food);
+  showScore(setup.score);
+};
+
 const setup = function(game) {
-  attachEventListeners(game.snake);
   createGrids();
-  drawSnake(game.snake);
-  drawSnake(game.ghostSnake);
-  drawFood(game.food);
-  showScore(game.score);
+  const setup = game.getStatus();
+  attachEventListeners(game);
+  drawSetup(setup);
 };
 
 const main = function() {
@@ -190,29 +200,30 @@ const main = function() {
 
   setup(game);
   game.setTimer();
+
   const timeIntervalId = setInterval(() => {
     checkStatus(game, timeIntervalId, ghostTimeIntervalId);
     updateSnakeAndFoodPosition(game);
-  }, 200);
+  }, 150);
 
   let ghostSnakeHead = EAST;
 
   const ghostTimeIntervalId = setInterval(() => {
     switch (ghostSnakeHead) {
       case EAST:
-        game.ghostSnake.turnLeft();
+        game.snakeTurnLeft('ghostSnake');
         break;
 
       case WEST:
-        game.ghostSnake.turnRight();
+        game.snakeTurnRight('ghostSnake');
         break;
 
       case NORTH:
-        game.ghostSnake.turnUp();
+        game.snakeTurnUp('ghostSnake');
         break;
 
       case SOUTH:
-        game.ghostSnake.turnDown();
+        game.snakeTurnDown('ghostSnake');
         break;
     }
     ghostSnakeHead = (ghostSnakeHead + 1) % 4;

@@ -31,7 +31,7 @@ class Snake {
   }
 
   move() {
-    const [headX, headY] = this.positions[this.positions.length - 1];
+    const [headX, headY] = this.head;
     this.previousTail = this.positions.shift();
 
     const [deltaX, deltaY] = this.direction.delta;

@@ -58,4 +58,49 @@ class Game {
       this.updateScore();
     }
   }
+
+  getScore() {
+    return this.score.score;
+  }
+
+  moveSnake(snakeType) {
+    this[snakeType].move();
+  }
+
+  getStatus() {
+    return {
+      snake: {
+        positions: this.snake.positions.slice(),
+        type: this.snake.species,
+        previousTail: this.snake.previousTail
+      },
+      ghostSnake: {
+        positions: this.ghostSnake.positions.slice(),
+        type: this.ghostSnake.species,
+        previousTail: this.ghostSnake.previousTail
+      },
+      food: this.food.position.slice(),
+      score: this.getScore()
+    };
+  }
+
+  snakeTurnLeft(snakeType) {
+    this[snakeType].turnLeft();
+  }
+
+  snakeTurnRight(snakeType) {
+    this[snakeType].turnRight();
+  }
+
+  snakeTurnUp(snakeType) {
+    this[snakeType].turnUp();
+  }
+
+  snakeTurnDown(snakeType) {
+    this[snakeType].turnDown();
+  }
+
+  getNewFood() {
+    return this.food.position;
+  }
 }
