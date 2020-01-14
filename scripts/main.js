@@ -8,7 +8,7 @@ const NUM_OF_ROWS = 60;
 
 const GRID_ID = 'grid';
 
-const TIME_LIMIT = 30;
+const TIME_LIMIT = 120;
 
 const getGrid = () => document.getElementById(GRID_ID);
 const getCellId = (colId, rowId) => colId + '_' + rowId;
@@ -38,6 +38,13 @@ const updateTimeLeft = function(count) {
   timer[0].innerText = `Time Left: ${count}s`;
 };
 
+// const setTimer = function(timeLimit) {
+//   const timerId = setInterval(() => {
+//     updateTimeLeft(timeLimit);
+//     timeLimit--;
+//   }, 1000);
+// };
+
 const showScore = function(score) {
   const scoreBox = document.getElementsByClassName('score');
   scoreBox[0].innerText = `score : ${score}`;
@@ -65,15 +72,15 @@ const drawSnake = function(snake) {
 };
 
 const drawFood = function(food) {
-  const [colId, rowId] = food;
+  const [colId, rowId] = food.position;
   const cell = getCell(colId, rowId);
-  cell.classList.add('food');
+  cell.classList.add(food.type);
 };
 
 const removeFood = function(food) {
-  const [colId, rowId] = food;
+  const [colId, rowId] = food.position;
   const cell = getCell(colId, rowId);
-  cell.classList.remove('food');
+  cell.classList.remove(food.type);
 };
 
 const handleKeyPress = game => {
@@ -109,7 +116,7 @@ const getRandomFood = function() {
 
 const initFood = function() {
   const foodPosition = getRandomFood();
-  const food = new Food(foodPosition);
+  const food = new Food(foodPosition, 'normal');
   return food;
 };
 
@@ -191,7 +198,7 @@ const main = function() {
     game.moveSnake('ghostSnake');
     drawGame(status);
     checkGameOver(status, game, timeIntervalId, ghostTimeIntervalId);
-  }, 150);
+  }, 100);
 
   let ghostSnakeHead = EAST;
 

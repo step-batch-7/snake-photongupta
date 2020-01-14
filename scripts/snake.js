@@ -1,9 +1,10 @@
 class Snake {
-  constructor(positions, direction, type) {
+  constructor(positions, direction, type, speedFactor) {
     this.positions = positions.slice();
     this.direction = direction;
     this.type = type;
     this.previousTail = [0, 0];
+    this.speedFactor = 0.2;
   }
 
   get location() {

@@ -3,7 +3,10 @@ class Score {
     this.score = 0;
   }
 
-  increaseScore() {
+  increaseScore(type) {
     this.score++;
+    if (type == 'special') {
+      this.score = this.score + 4;
+    }
   }
 }
