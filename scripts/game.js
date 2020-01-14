@@ -68,8 +68,9 @@ class Game {
     }
   }
 
-  moveSnake(snakeType) {
-    this[snakeType].move();
+  moveSnake() {
+    this.snake.move();
+    this.ghostSnake.move();
   }
 
   getStatus() {

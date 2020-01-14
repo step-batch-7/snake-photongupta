@@ -3,7 +3,7 @@ class Timer {
     this.timeLimit = timeLimit;
   }
 
-  set() {
+  start() {
     const timerId = setInterval(() => {
       updateTimeLeft(this.timeLimit);
       this.timeLimit--;

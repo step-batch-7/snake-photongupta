@@ -119,11 +119,6 @@ const animateFood = function(status) {
   drawFood(status.food);
 };
 
-const moveSnakes = function(game) {
-  game.moveSnake('snake');
-  game.moveSnake('ghostSnake');
-};
-
 const drawGame = function(status) {
   animateSnake([status.snake, status.ghostSnake]);
   animateFood(status);
@@ -138,19 +133,23 @@ const clearTimers = function(timerIds) {
   timerIds.forEach(id => clearInterval(id));
 };
 
-const main = function() {
-  createGrids();
-  const game = new Game();
+const initGame = function(game) {
   const status = game.getStatus();
-  const timer = new Timer(TIME_LIMIT);
-  const timerId = timer.set();
+  createGrids();
   attachEventListeners(game);
   drawGame(status);
+};
+
+const main = function() {
+  const game = new Game();
+  initGame(game);
+  const timer = new Timer(TIME_LIMIT);
+  const timerId = timer.start();
 
   const gameTimerId = setInterval(() => {
     game.update();
     const status = game.getStatus();
-    moveSnakes(game);
+    game.moveSnake();
     drawGame(status);
     if (isGameOver(game, timer)) {
       clearTimers([gameTimerId, ghostTimerId, timerId]);
