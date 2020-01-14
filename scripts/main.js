@@ -34,17 +34,12 @@ const createGrids = function() {
   }
 };
 
-const updateTimeLeft = function(count) {
-  const timer = document.getElementsByClassName('timer');
-  timer[0].innerText = `Time Left: ${count}s`;
-};
-
 const showScore = function(score) {
   const scoreBox = document.getElementsByClassName('score');
   scoreBox[0].innerText = `score : ${score}`;
 };
 
-const displayGameOverPanel = function(scoreBoard) {
+const displayGameOver = function(scoreBoard) {
   const panel = document.getElementsByClassName('gameOver');
   const panelContent = document.getElementsByClassName('status');
   panel[0].style.marginTop = `0vw`;
@@ -107,12 +102,6 @@ const attachEventListeners = game => {
   document.body.onkeydown = handleKeyPress.bind(null, game);
 };
 
-const getRandomFood = function() {
-  const foodColNo = Math.round(Math.random() * 60);
-  const foodRowNo = Math.round(Math.random() * 100);
-  return [foodRowNo, foodColNo];
-};
-
 const initFood = function() {
   const foodPosition = getRandomFood();
   const food = new Food(foodPosition, 'normal');
@@ -162,6 +151,11 @@ const animateFood = function(status) {
   drawFood(status.food);
 };
 
+const moveSnakes = function(game) {
+  game.moveSnake('snake');
+  game.moveSnake('ghostSnake');
+};
+
 const drawGame = function(status) {
   animateSnake(status.snake);
   animateSnake(status.ghostSnake);
@@ -169,40 +163,39 @@ const drawGame = function(status) {
   showScore(status.score);
 };
 
-const checkGameOver = function(
-  status,
-  game,
-  timeIntervalId,
-  ghostTimeIntervalId
-) {
-  if (game.isOver()) {
-    displayGameOverPanel(status.score);
-    game.clearTimer();
-    clearInterval(timeIntervalId);
-    clearInterval(ghostTimeIntervalId);
-  }
+const isGameOver = function(game, timer) {
+  return game.isOver() || timer.isTimeOut();
+};
+
+const clearTimers = function(gameTimerId, ghostTimerId, timerId) {
+  clearInterval(gameTimerId);
+  clearInterval(ghostTimerId);
+  clearInterval(timerId);
 };
 
 const main = function() {
   createGrids();
   const game = initializeGame();
   const status = game.getStatus();
+  const timer = new Timer(TIME_LIMIT);
+  const timerId = timer.set();
   attachEventListeners(game);
   drawGame(status);
-  game.setTimer();
 
-  const timeIntervalId = setInterval(() => {
+  const gameTimerId = setInterval(() => {
     game.update();
     const status = game.getStatus();
-    game.moveSnake('snake');
-    game.moveSnake('ghostSnake');
+    moveSnakes(game);
     drawGame(status);
-    checkGameOver(status, game, timeIntervalId, ghostTimeIntervalId);
-    game.comeBack('ghostSnake');
+    if (isGameOver(game, timer)) {
+      clearTimers(gameTimerId, ghostTimerId, timerId);
+      displayGameOver(status.score);
+    }
+    game.wrap('ghostSnake');
   }, 100);
 
-  const ghostTimeIntervalId = setInterval(() => {
+  const ghostTimerId = setInterval(() => {
     const direction = getRandomDirection();
     game.turn('ghostSnake', direction);
-  }, 500);
+  }, 1000);
 };

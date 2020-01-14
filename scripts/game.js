@@ -16,25 +16,13 @@ class Game {
 
   hadTouchedBoundaries() {
     const [headX, headY] = this.snake.head;
-    const hadTouchedVerticalWalls = headX < 0 || headX > 99;
-    const hadTouchedHorizontalWalls = headY < 0 || headY > 59;
+    const hadTouchedVerticalWalls = headX < 0 || headX == NUM_OF_COLS;
+    const hadTouchedHorizontalWalls = headY < 0 || headY == NUM_OF_ROWS;
     return hadTouchedHorizontalWalls || hadTouchedVerticalWalls;
   }
 
-  setTimer() {
-    this.timerId = this.timer.set();
-  }
-
-  clearTimer() {
-    clearTimeout(this.timerId);
-  }
-
   isOver() {
-    return (
-      this.snake.hadTouchedBody() ||
-      this.hadTouchedBoundaries() ||
-      this.timer.isTimeOut()
-    );
+    return this.snake.hadTouchedBody() || this.hadTouchedBoundaries();
   }
 
   update() {
@@ -72,8 +60,8 @@ class Game {
     };
   }
 
-  comeBack(snakeType) {
-    this[snakeType].comeFromOppositeSide();
+  wrap(snakeType) {
+    this[snakeType].wrap();
   }
 
   turn(snakeType, direction) {

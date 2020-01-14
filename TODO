@@ -19,7 +19,7 @@
 
 --Done-- * Generate random food 
 
---DONE-- * Allow snake to eat food when food becomes available
+--DONE-- * Allow snake to eat food when food bewraps available
 
 --DONE-- * Upon eating the food, snake should grow tall
 
@@ -35,6 +35,6 @@
 
 --DONE-- * allow ghost snake to move randomly
 
---DONE-- * ghost snake will come back from opposite wall if touches the wall any of four walls
+--DONE-- * ghost snake will wrap back from opposite wall if touches the wall any of four walls
 
 * game will be over if snake touches ghost Snake

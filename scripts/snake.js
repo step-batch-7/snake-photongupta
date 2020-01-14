@@ -26,12 +26,12 @@ class Snake {
     this.positions.push([headX + deltaX, headY + deltaY]);
   }
 
-  comeFromOppositeSide() {
+  wrap() {
     this.positions.forEach(([headX, headY], index) => {
-      if (headX > 99) headX = 0;
-      headX = headX % 99;
-      if (headY < 0) headY = 59;
-      headY = headY % 59;
+      if (headX < 0) headX = 97;
+      headX = headX % NUM_OF_COLS;
+      if (headY < 0) headY = 57;
+      headY = headY % NUM_OF_ROWS;
       this.positions[index] = [headX, headY];
     });
   }
