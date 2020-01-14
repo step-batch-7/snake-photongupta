@@ -22,12 +22,19 @@ class Snake {
   move() {
     const [headX, headY] = this.head;
     this.previousTail = this.positions.shift();
-
     const [deltaX, deltaY] = this.direction.delta;
-
     this.positions.push([headX + deltaX, headY + deltaY]);
   }
 
+  comeFromOppositeSide() {
+    this.positions.forEach(([headX, headY], index) => {
+      if (headX > 99) headX = 0;
+      headX = headX % 99;
+      if (headY < 0) headY = 59;
+      headY = headY % 59;
+      this.positions[index] = [headX, headY];
+    });
+  }
   increaseLength(food) {
     this.positions.unshift(food);
   }

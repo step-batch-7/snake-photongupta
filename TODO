@@ -32,3 +32,9 @@
 --DONE-- * special food will create after 5 normal food
 
 --DONE-- * if snake eats special food score will increase by 5
+
+--DONE-- * allow ghost snake to move randomly
+
+--DONE-- * ghost snake will come back from opposite wall if touches the wall any of four walls
+
+* game will be over if snake touches ghost Snake

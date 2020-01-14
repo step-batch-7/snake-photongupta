@@ -21,7 +21,7 @@ element {
 
 .snake {
   background-color: black;
-  border-radius: 40px;
+  border-radius: 3px;
 }
 
 .ghost {
@@ -31,19 +31,6 @@ element {
 .normal {
   border-radius: 50px;
   background-color: red;
-  animation-name: normalFood;
-  animation-duration: 0.7s;
-  animation-iteration-count: infinite;
-  animation-direction: alternate;
-}
-
-@keyframes normalFood {
-  from {
-    box-shadow: 0px 0px 3px 3px orange;
-  }
-  to {
-    box-shadow: 0px 0px 1px 1px orange;
-  }
 }
 
 .special {

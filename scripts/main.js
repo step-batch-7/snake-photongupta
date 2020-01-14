@@ -8,7 +8,7 @@ const NUM_OF_ROWS = 60;
 
 const GRID_ID = 'grid';
 
-const TIME_LIMIT = 10;
+const TIME_LIMIT = 120;
 const INITIAL_SCORE = 0;
 
 const getGrid = () => document.getElementById(GRID_ID);
@@ -49,6 +49,11 @@ const displayGameOverPanel = function(scoreBoard) {
   const panelContent = document.getElementsByClassName('status');
   panel[0].style.marginTop = `0vw`;
   panelContent[0].innerText = `GameOver...\nYour score:${scoreBoard}`;
+};
+
+const getRandomDirection = function() {
+  const directions = ['turnLeft', 'turnRight', 'turnUp', 'turnDown'];
+  return directions[Math.round(Math.random() * 3)];
 };
 
 const eraseTail = function(snake) {
@@ -193,28 +198,11 @@ const main = function() {
     game.moveSnake('ghostSnake');
     drawGame(status);
     checkGameOver(status, game, timeIntervalId, ghostTimeIntervalId);
+    game.comeBack('ghostSnake');
   }, 100);
 
-  let ghostSnakeHead = EAST;
-
   const ghostTimeIntervalId = setInterval(() => {
-    switch (ghostSnakeHead) {
-      case EAST:
-        game.turn('ghostSnake', 'turnLeft');
-        break;
-
-      case WEST:
-        game.turn('ghostSnake', 'turnRight');
-        break;
-
-      case NORTH:
-        game.turn('ghostSnake', 'turnUp');
-        break;
-
-      case SOUTH:
-        game.turn('ghostSnake', 'turnDown');
-        break;
-    }
-    ghostSnakeHead = (ghostSnakeHead + 1) % 4;
+    const direction = getRandomDirection();
+    game.turn('ghostSnake', direction);
   }, 500);
 };

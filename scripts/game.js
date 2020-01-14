@@ -72,6 +72,10 @@ class Game {
     };
   }
 
+  comeBack(snakeType) {
+    this[snakeType].comeFromOppositeSide();
+  }
+
   turn(snakeType, direction) {
     this[snakeType].turn(direction);
   }
