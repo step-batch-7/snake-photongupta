@@ -1,10 +1,10 @@
 class Game {
-  constructor(snake, ghostSnake, food, score, timeLimit) {
+  constructor(snake, ghostSnake, food, score, timer) {
     this.snake = snake;
     this.ghostSnake = ghostSnake;
     this.food = food;
     this.score = score;
-    this.timeLimit = timeLimit;
+    this.timer = timer;
     this.previousFood = {position: [0, 0], foodType: 'normal'};
   }
 
@@ -22,19 +22,18 @@ class Game {
   }
 
   setTimer() {
-    setInterval(() => {
-      updateTimeLeft(this.timeLimit);
-      this.timeLimit--;
-    }, 1000);
+    this.timerId = this.timer.set();
   }
 
-  isTimeOut() {
-    return this.timeLimit == 0;
+  clearTimer() {
+    clearTimeout(this.timerId);
   }
 
   isOver() {
     return (
-      this.snake.hadTouchedBody() || this.hadTouchedBoundaries() || isTimeOut()
+      this.snake.hadTouchedBody() ||
+      this.hadTouchedBoundaries() ||
+      this.timer.isTimeOut()
     );
   }
 

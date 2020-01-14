@@ -8,7 +8,8 @@ const NUM_OF_ROWS = 60;
 
 const GRID_ID = 'grid';
 
-const TIME_LIMIT = 120;
+const TIME_LIMIT = 10;
+const INITIAL_SCORE = 0;
 
 const getGrid = () => document.getElementById(GRID_ID);
 const getCellId = (colId, rowId) => colId + '_' + rowId;
@@ -37,13 +38,6 @@ const updateTimeLeft = function(count) {
   const timer = document.getElementsByClassName('timer');
   timer[0].innerText = `Time Left: ${count}s`;
 };
-
-// const setTimer = function(timeLimit) {
-//   const timerId = setInterval(() => {
-//     updateTimeLeft(timeLimit);
-//     timeLimit--;
-//   }, 1000);
-// };
 
 const showScore = function(score) {
   const scoreBox = document.getElementsByClassName('score');
@@ -148,9 +142,9 @@ const initializeGame = function() {
   const snake = initSnake();
   const ghostSnake = initGhostSnake();
   const food = initFood();
-  const score = new Score();
-  const seconds = TIME_LIMIT;
-  return new Game(snake, ghostSnake, food, score, seconds);
+  const score = new Score(INITIAL_SCORE);
+  const timer = new Timer(TIME_LIMIT);
+  return new Game(snake, ghostSnake, food, score, timer);
 };
 
 const animateSnake = function(snake) {
@@ -178,6 +172,7 @@ const checkGameOver = function(
 ) {
   if (game.isOver()) {
     displayGameOverPanel(status.score);
+    game.clearTimer();
     clearInterval(timeIntervalId);
     clearInterval(ghostTimeIntervalId);
   }

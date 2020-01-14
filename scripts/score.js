@@ -1,6 +1,6 @@
 class Score {
-  constructor() {
-    this.score = 0;
+  constructor(initialScore) {
+    this.score = initialScore;
   }
 
   increaseScore(type) {

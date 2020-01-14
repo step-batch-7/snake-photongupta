@@ -86,6 +86,7 @@ element {
   background-color: gray;
   transition: 1s;
   font-size: 100px;
+  opacity: 0.8;
 }
 
 .status {
