@@ -17,24 +17,26 @@
 
 --DONE-- * Add left, right, up and down movement of snake using respective arrow keys.
 
---Done-- * Generate random food 
+--DONE-- * Generate random food 
 
---DONE-- * Allow snake to eat food when food bewraps available
+--DONE-- * Allow snake to eat food when food is available
 
 --DONE-- * Upon eating the food, snake should grow tall
 
 --DONE-- * Add a scoring mechanism
 
+--DONE-- * Add a timeLimit mechanism
+
 --DONE-- * If snake touches itself the game should be over
 
 --DONE-- * If snake touches any of the four wall the game should be over
 
---DONE-- * special food will create after 5 normal food
+--DONE-- * special food should appear after 5 normal food
 
 --DONE-- * if snake eats special food score will increase by 5
 
 --DONE-- * allow ghost snake to move randomly
 
---DONE-- * ghost snake will wrap back from opposite wall if touches the wall any of four walls
+--DONE-- * ghost snake should come back from opposite wall if touches the any of four walls
 
 * game will be over if snake touches ghost Snake

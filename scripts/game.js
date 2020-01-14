@@ -1,10 +1,39 @@
+const initFood = function() {
+  const foodPosition = getRandomFood();
+  return new Food(foodPosition, 'normal');
+};
+
+const initGhostSnake = function() {
+  return new Snake(
+    [
+      [40, 30],
+      [41, 30],
+      [42, 30]
+    ],
+    new Direction(SOUTH),
+    'ghost'
+  );
+};
+
+const initSnake = function() {
+  return new Snake(
+    [
+      [40, 25],
+      [41, 25],
+      [42, 25]
+    ],
+    new Direction(EAST),
+    'snake'
+  );
+};
+
 class Game {
-  constructor(snake, ghostSnake, food, score, timer) {
-    this.snake = snake;
-    this.ghostSnake = ghostSnake;
-    this.food = food;
-    this.score = score;
-    this.timer = timer;
+  constructor() {
+    this.snake = initSnake();
+    this.ghostSnake = initGhostSnake();
+    this.food = initFood();
+    this.score = new Score(0);
+    this.timer = TIME_LIMIT;
     this.previousFood = {position: [0, 0], foodType: 'normal'};
   }
 
@@ -26,9 +55,13 @@ class Game {
   }
 
   update() {
+    let points = 1;
     if (this.hasFoodEaten()) {
       this.snake.increaseLength(this.food.position);
-      this.score.increaseScore(this.food.foodType);
+      if (this.food.foodType == 'special') {
+        points = 5;
+      }
+      this.score.updateScore(points);
       this.previousFood.position = this.food.position;
       this.previousFood.foodType = this.food.foodType;
       this.food.updatePosition();

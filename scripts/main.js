@@ -77,6 +77,11 @@ const removeFood = function(food) {
   cell.classList.remove(food.type);
 };
 
+const updateTimeLeft = function(count) {
+  const timer = document.getElementsByClassName('timer');
+  timer[0].innerText = `Time Left: ${count}s`;
+};
+
 const handleKeyPress = game => {
   const input = event.key;
   switch (input) {
@@ -102,48 +107,11 @@ const attachEventListeners = game => {
   document.body.onkeydown = handleKeyPress.bind(null, game);
 };
 
-const initFood = function() {
-  const foodPosition = getRandomFood();
-  const food = new Food(foodPosition, 'normal');
-  return food;
-};
-
-const initGhostSnake = function() {
-  return new Snake(
-    [
-      [40, 30],
-      [41, 30],
-      [42, 30]
-    ],
-    new Direction(SOUTH),
-    'ghost'
-  );
-};
-
-const initSnake = function() {
-  return new Snake(
-    [
-      [40, 25],
-      [41, 25],
-      [42, 25]
-    ],
-    new Direction(EAST),
-    'snake'
-  );
-};
-
-const initializeGame = function() {
-  const snake = initSnake();
-  const ghostSnake = initGhostSnake();
-  const food = initFood();
-  const score = new Score(INITIAL_SCORE);
-  const timer = new Timer(TIME_LIMIT);
-  return new Game(snake, ghostSnake, food, score, timer);
-};
-
-const animateSnake = function(snake) {
-  eraseTail(snake);
-  drawSnake(snake);
+const animateSnake = function(snakes) {
+  snakes.forEach(snake => {
+    eraseTail(snake);
+    drawSnake(snake);
+  });
 };
 
 const animateFood = function(status) {
@@ -157,8 +125,7 @@ const moveSnakes = function(game) {
 };
 
 const drawGame = function(status) {
-  animateSnake(status.snake);
-  animateSnake(status.ghostSnake);
+  animateSnake([status.snake, status.ghostSnake]);
   animateFood(status);
   showScore(status.score);
 };
@@ -167,15 +134,13 @@ const isGameOver = function(game, timer) {
   return game.isOver() || timer.isTimeOut();
 };
 
-const clearTimers = function(gameTimerId, ghostTimerId, timerId) {
-  clearInterval(gameTimerId);
-  clearInterval(ghostTimerId);
-  clearInterval(timerId);
+const clearTimers = function(timerIds) {
+  timerIds.forEach(id => clearInterval(id));
 };
 
 const main = function() {
   createGrids();
-  const game = initializeGame();
+  const game = new Game();
   const status = game.getStatus();
   const timer = new Timer(TIME_LIMIT);
   const timerId = timer.set();
@@ -188,7 +153,7 @@ const main = function() {
     moveSnakes(game);
     drawGame(status);
     if (isGameOver(game, timer)) {
-      clearTimers(gameTimerId, ghostTimerId, timerId);
+      clearTimers([gameTimerId, ghostTimerId, timerId]);
       displayGameOver(status.score);
     }
     game.wrap('ghostSnake');

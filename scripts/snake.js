@@ -1,10 +1,9 @@
 class Snake {
-  constructor(positions, direction, type, speedFactor) {
+  constructor(positions, direction, type) {
     this.positions = positions.slice();
     this.direction = direction;
     this.type = type;
     this.previousTail = [0, 0];
-    this.speedFactor = 0.2;
   }
 
   get location() {
@@ -35,6 +34,7 @@ class Snake {
       this.positions[index] = [headX, headY];
     });
   }
+
   increaseLength(food) {
     this.positions.unshift(food);
   }
@@ -45,9 +45,9 @@ class Snake {
 
   hadTouchedBody() {
     const body = this.positions.slice(0, -1);
-    const head = body.pop();
+    const [headX, headY] = body.pop();
     const hasTouched = body.some(
-      position => JSON.stringify(position) == JSON.stringify(head)
+      ([positionX, positionY]) => positionX == headX && positionY == headY
     );
     return hasTouched;
   }
