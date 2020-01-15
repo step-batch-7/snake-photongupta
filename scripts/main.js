@@ -134,10 +134,8 @@ const clearTimers = function(timerIds) {
 };
 
 const initGame = function(game) {
-  const status = game.getStatus();
   createGrids();
   attachEventListeners(game);
-  drawGame(status);
 };
 
 const main = function() {
@@ -149,7 +147,6 @@ const main = function() {
   const gameTimerId = setInterval(() => {
     game.update();
     const status = game.getStatus();
-    game.moveSnake();
     drawGame(status);
 
     if (isGameOver(game, timer)) {
@@ -163,3 +160,5 @@ const main = function() {
     game.turn('ghostSnake', direction);
   }, 1000);
 };
+
+window.onload = main;

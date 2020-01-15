@@ -57,8 +57,8 @@ class Game {
 
   hadTouchedBoundaries() {
     const [headX, headY] = this.snake.head;
-    const hadTouchedVerticalWalls = headX < 0 || headX == NUM_OF_COLS;
-    const hadTouchedHorizontalWalls = headY < 0 || headY == NUM_OF_ROWS;
+    const hadTouchedVerticalWalls = headX == 0 || headX == 99;
+    const hadTouchedHorizontalWalls = headY == 0 || headY == 59;
     return hadTouchedHorizontalWalls || hadTouchedVerticalWalls;
   }
 
@@ -67,6 +67,7 @@ class Game {
   }
 
   update() {
+    this.moveSnake();
     this.ghostSnake.wrap();
     if (this.hasFoodEaten()) {
       this.snake.increaseLength(this.food.position);
@@ -82,14 +83,13 @@ class Game {
   }
 
   getStatus() {
-    const gameStatus = {
+    return {
       snake: this.snake.getStatus(),
       ghostSnake: this.ghostSnake.getStatus(),
       food: this.food.getStatus(),
       score: this.score.getStatus(),
       previousFood: this.previousFood.getStatus()
     };
-    return gameStatus;
   }
 
   turn(snakeType, direction) {
