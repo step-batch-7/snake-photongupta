@@ -46,7 +46,7 @@ class Game {
     this.food = initFood();
     this.score = new Score(0);
     this.timer = TIME_LIMIT;
-    this.previousFood = {position: [0, 0], foodType: 'normal'};
+    this.previousFood = new Food([0, 0], 'normal');
   }
 
   hasFoodEaten() {
@@ -67,12 +67,11 @@ class Game {
   }
 
   update() {
-    this.moveSnake();
+    this.ghostSnake.wrap();
     if (this.hasFoodEaten()) {
       this.snake.increaseLength(this.food.position);
       this.score.updateScore(this.food.point);
-      this.previousFood.position = this.food.position;
-      this.previousFood.foodType = this.food.foodType;
+      this.previousFood = this.food;
       this.food = initFood();
     }
   }
@@ -88,16 +87,9 @@ class Game {
       ghostSnake: this.ghostSnake.getStatus(),
       food: this.food.getStatus(),
       score: this.score.getStatus(),
-      previousFood: {
-        position: this.previousFood.position.slice(),
-        type: this.previousFood.foodType
-      }
+      previousFood: this.previousFood.getStatus()
     };
     return gameStatus;
-  }
-
-  wrap(snakeType) {
-    this[snakeType].wrap();
   }
 
   turn(snakeType, direction) {

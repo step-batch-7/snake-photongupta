@@ -147,15 +147,15 @@ const main = function() {
   const timerId = timer.start();
 
   const gameTimerId = setInterval(() => {
-    const status = game.getStatus();
     game.update();
+    const status = game.getStatus();
+    game.moveSnake();
     drawGame(status);
 
     if (isGameOver(game, timer)) {
       clearTimers([gameTimerId, ghostTimerId, timerId]);
       displayGameOver(status.score);
     }
-    game.wrap('ghostSnake');
   }, 100);
 
   const ghostTimerId = setInterval(() => {
