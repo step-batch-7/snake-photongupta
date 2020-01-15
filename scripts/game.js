@@ -1,6 +1,18 @@
+const getRandomFoodType = function() {
+  const types = ['normal', 'special'];
+  return types[Math.floor(Math.random() * 2)];
+};
+
+const getRandomFoodPosition = function() {
+  const foodColNo = Math.floor(Math.random() * NUM_OF_ROWS);
+  const foodRowNo = Math.floor(Math.random() * NUM_OF_COLS);
+  return [foodRowNo, foodColNo];
+};
+
 const initFood = function() {
-  const foodPosition = getRandomFood();
-  return new Food(foodPosition, 'normal');
+  const type = getRandomFoodType();
+  const foodPosition = getRandomFoodPosition();
+  return new Food(foodPosition, type);
 };
 
 const initGhostSnake = function() {
@@ -55,16 +67,13 @@ class Game {
   }
 
   update() {
-    let points = 1;
+    this.moveSnake();
     if (this.hasFoodEaten()) {
       this.snake.increaseLength(this.food.position);
-      if (this.food.foodType == 'special') {
-        points = 5;
-      }
-      this.score.updateScore(points);
+      this.score.updateScore(this.food.point);
       this.previousFood.position = this.food.position;
       this.previousFood.foodType = this.food.foodType;
-      this.food.updatePosition();
+      this.food = initFood();
     }
   }
 
@@ -74,24 +83,17 @@ class Game {
   }
 
   getStatus() {
-    return {
-      snake: {
-        positions: this.snake.positions.slice(),
-        type: this.snake.species,
-        previousTail: this.snake.previousTail
-      },
-      ghostSnake: {
-        positions: this.ghostSnake.positions.slice(),
-        type: this.ghostSnake.species,
-        previousTail: this.ghostSnake.previousTail
-      },
-      food: {position: this.food.position.slice(), type: this.food.foodType},
-      score: this.score.score,
+    const gameStatus = {
+      snake: this.snake.getStatus(),
+      ghostSnake: this.ghostSnake.getStatus(),
+      food: this.food.getStatus(),
+      score: this.score.getStatus(),
       previousFood: {
         position: this.previousFood.position.slice(),
         type: this.previousFood.foodType
       }
     };
+    return gameStatus;
   }
 
   wrap(snakeType) {

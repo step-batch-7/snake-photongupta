@@ -1,22 +1,19 @@
-const getRandomFood = function() {
-  const foodColNo = Math.floor(Math.random() * NUM_OF_ROWS);
-  const foodRowNo = Math.floor(Math.random() * NUM_OF_COLS);
-  return [foodRowNo, foodColNo];
+const pointsOfFood = {
+  normal: 1,
+  special: 5
 };
 
 class Food {
   constructor(position, type) {
     this.position = position.slice();
     this.foodType = type;
-    this.count = 1;
+    this.point = pointsOfFood[this.foodType];
   }
 
-  updatePosition() {
-    this.foodType = 'normal';
-    if (this.count % 5 == 0) {
-      this.foodType = 'special';
-    }
-    this.position = getRandomFood();
-    this.count++;
+  getStatus() {
+    const foodStatus = {};
+    foodStatus.position = this.position.slice();
+    foodStatus.type = this.foodType;
+    return foodStatus;
   }
 }

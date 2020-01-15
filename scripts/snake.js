@@ -27,9 +27,9 @@ class Snake {
 
   wrap() {
     this.positions.forEach(([headX, headY], index) => {
-      if (headX < 0) headX = 97;
+      if (headX < 0) headX = 98;
       headX = headX % NUM_OF_COLS;
-      if (headY < 0) headY = 57;
+      if (headY < 0) headY = 58;
       headY = headY % NUM_OF_ROWS;
       this.positions[index] = [headX, headY];
     });
@@ -50,5 +50,13 @@ class Snake {
       ([positionX, positionY]) => positionX == headX && positionY == headY
     );
     return hasTouched;
+  }
+
+  getStatus() {
+    const snakeStatus = {};
+    snakeStatus.positions = this.positions.slice();
+    snakeStatus.type = this.type;
+    snakeStatus.previousTail = this.previousTail;
+    return snakeStatus;
   }
 }

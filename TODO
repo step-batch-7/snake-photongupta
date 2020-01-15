@@ -31,7 +31,7 @@
 
 --DONE-- * If snake touches any of the four wall the game should be over
 
---DONE-- * special food should appear after 5 normal food
+--DONE-- * special food should appear randomly
 
 --DONE-- * if snake eats special food score will increase by 5
 

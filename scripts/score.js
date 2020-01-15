@@ -6,4 +6,8 @@ class Score {
   updateScore(points) {
     this.score += points;
   }
+
+  getStatus() {
+    return this.score;
+  }
 }
