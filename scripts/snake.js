@@ -59,4 +59,10 @@ class Snake {
     snakeStatus.previousTail = this.previousTail;
     return snakeStatus;
   }
+
+  hasFoodEaten(foodPosition) {
+    const [colId, rowId] = foodPosition;
+    const [headX, headY] = this.head;
+    return colId == headX && rowId == headY;
+  }
 }

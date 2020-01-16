@@ -1,15 +1,14 @@
+const getRandomDirection = function() {
+  const directions = ['turnLeft', 'turnRight', 'turnUp', 'turnDown'];
+  return directions[Math.round(Math.random() * 3)];
+};
+
 class Game {
   constructor(snake, ghostSnake, food, score) {
     this.snake = snake;
     this.ghostSnake = ghostSnake;
     this.food = food;
     this.score = score;
-  }
-
-  hasFoodEaten() {
-    const [colId, rowId] = this.food.position;
-    const [headX, headY] = this.snake.head;
-    return colId == headX && rowId == headY;
   }
 
   hadTouchedBoundaries() {
@@ -29,11 +28,11 @@ class Game {
     this.snake.move();
     this.ghostSnake.move();
     this.ghostSnake.wrap();
-    if (this.hasFoodEaten()) {
-      const foodStatus = this.food.getStatus();
+    const foodStatus = this.food.getStatus();
+    if (this.snake.hasFoodEaten(foodStatus.position)) {
       this.snake.increaseLength(foodStatus.position);
       this.score.updateScore(foodStatus.point);
-      this.food = initFood();
+      this.food = getNewFood();
     }
   }
 

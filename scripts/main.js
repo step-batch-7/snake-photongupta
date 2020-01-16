@@ -40,16 +40,10 @@ const showScore = function(score) {
 };
 
 const displayGameOver = function(scoreBoard) {
-  console.log(scoreBoard);
   const panel = document.getElementsByClassName('gameOver');
   const panelContent = document.getElementsByClassName('status');
   panel[0].style.marginTop = `0vw`;
   panelContent[0].innerText = `GameOver...\nYour score:${scoreBoard}`;
-};
-
-const getRandomDirection = function() {
-  const directions = ['turnLeft', 'turnRight', 'turnUp', 'turnDown'];
-  return directions[Math.round(Math.random() * 3)];
 };
 
 const eraseTail = function(snake) {
@@ -109,7 +103,6 @@ const attachEventListeners = game => {
 };
 
 const drawGame = function(status) {
-  console.log(status);
   drawSnake(status.snake);
   drawSnake(status.ghostSnake);
   drawFood(status.food);
@@ -146,7 +139,7 @@ const getRandomFoodPosition = function() {
   return [foodRowNo, foodColNo];
 };
 
-const initFood = function() {
+const getNewFood = function() {
   const type = getRandomFoodType();
   const foodPosition = getRandomFoodPosition();
   return new Food(foodPosition, type);
@@ -171,7 +164,7 @@ const createGame = function() {
     new Direction(SOUTH),
     'ghost'
   );
-  const food = initFood();
+  const food = getNewFood();
   const score = new Score(INITIAL_SCORE);
   return new Game(snake, ghostSnake, food, score);
 };
