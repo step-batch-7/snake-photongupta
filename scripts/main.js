@@ -66,10 +66,11 @@ const drawFood = function(food) {
   cell.classList.add(food.type);
 };
 
-const removeFood = function(food) {
-  const [colId, rowId] = food.position;
-  const cell = getCell(colId, rowId);
-  cell.classList.remove(food.type);
+const removeFood = function() {
+  const food =
+    document.querySelector('.normal') || document.querySelector('.special');
+  food.classList.remove('normal');
+  food.classList.remove('special');
 };
 
 const updateTimeLeft = function(count) {
@@ -110,7 +111,7 @@ const drawGame = function(status) {
 };
 
 const eraseGame = function(status) {
-  removeFood(status.food);
+  removeFood();
   eraseTail(status.ghostSnake);
   eraseTail(status.snake);
 };
@@ -124,25 +125,10 @@ const clearTimers = function(timerIds) {
 };
 
 const initGame = function(game) {
+  const status = game.getStatus();
   createGrids();
   attachEventListeners(game);
-};
-
-const getRandomFoodType = function() {
-  const types = ['normal', 'special'];
-  return types[Math.floor(Math.random() * 2)];
-};
-
-const getRandomFoodPosition = function() {
-  const foodColNo = Math.floor(Math.random() * NUM_OF_ROWS);
-  const foodRowNo = Math.floor(Math.random() * NUM_OF_COLS);
-  return [foodRowNo, foodColNo];
-};
-
-const getNewFood = function() {
-  const type = getRandomFoodType();
-  const foodPosition = getRandomFoodPosition();
-  return new Food(foodPosition, type);
+  drawGame(status);
 };
 
 const createGame = function() {
@@ -164,7 +150,7 @@ const createGame = function() {
     new Direction(SOUTH),
     'ghost'
   );
-  const food = getNewFood();
+  const food = new Food([76, 35], 'normal');
   const score = new Score(INITIAL_SCORE);
   return new Game(snake, ghostSnake, food, score);
 };
@@ -176,10 +162,9 @@ const main = function() {
   const timerId = timer.start();
 
   const gameTimerId = setInterval(() => {
+    game.update();
     let status = game.getStatus();
     eraseGame(status);
-    game.update();
-    status = game.getStatus();
     drawGame(status);
 
     if (isGameOver(game, timer)) {

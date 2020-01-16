@@ -3,6 +3,23 @@ const getRandomDirection = function() {
   return directions[Math.round(Math.random() * 3)];
 };
 
+const getRandomFoodType = function() {
+  const types = ['normal', 'special'];
+  return types[Math.floor(Math.random() * 2)];
+};
+
+const getRandomFoodPosition = function() {
+  const foodColNo = Math.floor(Math.random() * NUM_OF_ROWS);
+  const foodRowNo = Math.floor(Math.random() * NUM_OF_COLS);
+  return [foodRowNo, foodColNo];
+};
+
+const getNewFood = function() {
+  const type = getRandomFoodType();
+  const foodPosition = getRandomFoodPosition();
+  return new Food(foodPosition, type);
+};
+
 class Game {
   constructor(snake, ghostSnake, food, score) {
     this.snake = snake;
