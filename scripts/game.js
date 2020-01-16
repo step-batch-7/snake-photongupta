@@ -1,52 +1,9 @@
-const getRandomFoodType = function() {
-  const types = ['normal', 'special'];
-  return types[Math.floor(Math.random() * 2)];
-};
-
-const getRandomFoodPosition = function() {
-  const foodColNo = Math.floor(Math.random() * NUM_OF_ROWS);
-  const foodRowNo = Math.floor(Math.random() * NUM_OF_COLS);
-  return [foodRowNo, foodColNo];
-};
-
-const initFood = function() {
-  const type = getRandomFoodType();
-  const foodPosition = getRandomFoodPosition();
-  return new Food(foodPosition, type);
-};
-
-const initGhostSnake = function() {
-  return new Snake(
-    [
-      [40, 30],
-      [41, 30],
-      [42, 30]
-    ],
-    new Direction(SOUTH),
-    'ghost'
-  );
-};
-
-const initSnake = function() {
-  return new Snake(
-    [
-      [40, 25],
-      [41, 25],
-      [42, 25]
-    ],
-    new Direction(EAST),
-    'snake'
-  );
-};
-
 class Game {
-  constructor() {
-    this.snake = initSnake();
-    this.ghostSnake = initGhostSnake();
-    this.food = initFood();
-    this.score = new Score(0);
-    this.timer = TIME_LIMIT;
-    this.previousFood = new Food([0, 0], 'normal');
+  constructor(snake, ghostSnake, food, score) {
+    this.snake = snake;
+    this.ghostSnake = ghostSnake;
+    this.food = food;
+    this.score = score;
   }
 
   hasFoodEaten() {
@@ -67,19 +24,17 @@ class Game {
   }
 
   update() {
-    this.moveSnake();
-    this.ghostSnake.wrap();
-    if (this.hasFoodEaten()) {
-      this.snake.increaseLength(this.food.position);
-      this.score.updateScore(this.food.point);
-      this.previousFood = this.food;
-      this.food = initFood();
-    }
-  }
-
-  moveSnake() {
+    const direction = getRandomDirection();
+    this.turn('ghostSnake', direction);
     this.snake.move();
     this.ghostSnake.move();
+    this.ghostSnake.wrap();
+    if (this.hasFoodEaten()) {
+      const foodStatus = this.food.getStatus();
+      this.snake.increaseLength(foodStatus.position);
+      this.score.updateScore(foodStatus.point);
+      this.food = initFood();
+    }
   }
 
   getStatus() {
@@ -87,8 +42,7 @@ class Game {
       snake: this.snake.getStatus(),
       ghostSnake: this.ghostSnake.getStatus(),
       food: this.food.getStatus(),
-      score: this.score.getStatus(),
-      previousFood: this.previousFood.getStatus()
+      score: this.score.getStatus()
     };
   }
 

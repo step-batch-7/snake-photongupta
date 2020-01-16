@@ -14,6 +14,7 @@ class Food {
     const foodStatus = {};
     foodStatus.position = this.position.slice();
     foodStatus.type = this.foodType;
+    foodStatus.point = this.point;
     return foodStatus;
   }
 }

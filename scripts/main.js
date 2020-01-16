@@ -40,6 +40,7 @@ const showScore = function(score) {
 };
 
 const displayGameOver = function(scoreBoard) {
+  console.log(scoreBoard);
   const panel = document.getElementsByClassName('gameOver');
   const panelContent = document.getElementsByClassName('status');
   panel[0].style.marginTop = `0vw`;
@@ -107,22 +108,18 @@ const attachEventListeners = game => {
   document.body.onkeydown = handleKeyPress.bind(null, game);
 };
 
-const animateSnake = function(snakes) {
-  snakes.forEach(snake => {
-    eraseTail(snake);
-    drawSnake(snake);
-  });
-};
-
-const animateFood = function(status) {
-  removeFood(status.previousFood);
-  drawFood(status.food);
-};
-
 const drawGame = function(status) {
-  animateSnake([status.snake, status.ghostSnake]);
-  animateFood(status);
+  console.log(status);
+  drawSnake(status.snake);
+  drawSnake(status.ghostSnake);
+  drawFood(status.food);
   showScore(status.score);
+};
+
+const eraseGame = function(status) {
+  removeFood(status.food);
+  eraseTail(status.ghostSnake);
+  eraseTail(status.snake);
 };
 
 const isGameOver = function(game, timer) {
@@ -138,27 +135,65 @@ const initGame = function(game) {
   attachEventListeners(game);
 };
 
+const getRandomFoodType = function() {
+  const types = ['normal', 'special'];
+  return types[Math.floor(Math.random() * 2)];
+};
+
+const getRandomFoodPosition = function() {
+  const foodColNo = Math.floor(Math.random() * NUM_OF_ROWS);
+  const foodRowNo = Math.floor(Math.random() * NUM_OF_COLS);
+  return [foodRowNo, foodColNo];
+};
+
+const initFood = function() {
+  const type = getRandomFoodType();
+  const foodPosition = getRandomFoodPosition();
+  return new Food(foodPosition, type);
+};
+
+const createGame = function() {
+  const snake = new Snake(
+    [
+      [40, 25],
+      [41, 25],
+      [42, 25]
+    ],
+    new Direction(EAST),
+    'snake'
+  );
+  const ghostSnake = new Snake(
+    [
+      [40, 30],
+      [41, 30],
+      [42, 30]
+    ],
+    new Direction(SOUTH),
+    'ghost'
+  );
+  const food = initFood();
+  const score = new Score(INITIAL_SCORE);
+  return new Game(snake, ghostSnake, food, score);
+};
+
 const main = function() {
-  const game = new Game();
+  const game = createGame();
   initGame(game);
   const timer = new Timer(TIME_LIMIT);
   const timerId = timer.start();
 
   const gameTimerId = setInterval(() => {
+    let status = game.getStatus();
+    eraseGame(status);
     game.update();
-    const status = game.getStatus();
+    status = game.getStatus();
     drawGame(status);
 
     if (isGameOver(game, timer)) {
-      clearTimers([gameTimerId, ghostTimerId, timerId]);
+      clearTimers([gameTimerId, timerId]);
       displayGameOver(status.score);
     }
   }, 100);
-
-  const ghostTimerId = setInterval(() => {
-    const direction = getRandomDirection();
-    game.turn('ghostSnake', direction);
-  }, 1000);
 };
 
 window.onload = main;
