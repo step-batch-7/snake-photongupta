@@ -34,8 +34,8 @@ class Game {
 
   hasTouchedBoundaries() {
     const [headX, headY] = this.#snake.head;
-    const hasTouchedVerticalWalls = headX < 0 || headX > 99;
-    const hasTouchedHorizontalWalls = headY < 0 || headY > 59;
+    const hasTouchedVerticalWalls = headX < 0 || headX == NUM_OF_COLS;
+    const hasTouchedHorizontalWalls = headY < 0 || headY == NUM_OF_ROWS;
     return hasTouchedHorizontalWalls || hasTouchedVerticalWalls;
   }
 
