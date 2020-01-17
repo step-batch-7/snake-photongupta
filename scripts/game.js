@@ -14,7 +14,7 @@ const getRandomFoodPosition = function() {
   return [foodRowNo, foodColNo];
 };
 
-const getNewFood = function() {
+const createFood = function() {
   const type = getRandomFoodType();
   const foodPosition = getRandomFoodPosition();
   return new Food(foodPosition, type);
@@ -58,7 +58,7 @@ class Game {
     if (this.#snake.hasFoodEaten(foodStatus.position)) {
       this.#snake.grow();
       this.#score.updateScore(foodStatus.point);
-      this.#food = getNewFood();
+      this.#food = createFood();
     }
   }
 
