@@ -39,4 +39,4 @@
 
 --DONE-- * ghost snake should come back from opposite wall if touches the any of four walls
 
-* game will be over if snake touches ghost Snake
+--DONE-- * game will be over if snake touches ghost Snake

@@ -26,17 +26,15 @@ class Snake {
   }
 
   wrap() {
-    this.positions.forEach(([headX, headY], index) => {
-      if (headX < 0) headX = 98;
-      headX = headX % NUM_OF_COLS;
-      if (headY < 0) headY = 58;
-      headY = headY % NUM_OF_ROWS;
-      this.positions[index] = [headX, headY];
+    this.positions.forEach(([posX, posY], index) => {
+      posX = (posX + NUM_OF_COLS) % NUM_OF_COLS;
+      posY = (posY + NUM_OF_ROWS) % NUM_OF_ROWS;
+      this.positions[index] = [posX, posY];
     });
   }
 
-  increaseLength(food) {
-    this.positions.unshift(food);
+  increaseLength() {
+    this.positions.unshift(this.previousTail);
   }
 
   get head() {
@@ -44,8 +42,8 @@ class Snake {
   }
 
   hadTouchedBody() {
-    const body = this.positions.slice(0, -1);
-    const [headX, headY] = body.pop();
+    const body = this.positions.slice(0, this.positions.length - 1);
+    const [headX, headY] = this.head;
     const hasTouched = body.some(
       ([positionX, positionY]) => positionX == headX && positionY == headY
     );
@@ -64,5 +62,14 @@ class Snake {
     const [colId, rowId] = foodPosition;
     const [headX, headY] = this.head;
     return colId == headX && rowId == headY;
+  }
+
+  isOn(cell) {
+    const [x, y] = cell;
+    return this.positions.some(([posX, posY]) => posX == x && posY == y);
+  }
+
+  hasTouchedGhostSnake(ghostSnakePositions) {
+    return ghostSnakePositions.some(position => this.isOn(position));
   }
 }

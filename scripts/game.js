@@ -36,7 +36,12 @@ class Game {
   }
 
   isOver() {
-    return this.snake.hadTouchedBody() || this.hadTouchedBoundaries();
+    const ghostSnakeStatus = this.ghostSnake.getStatus();
+    return (
+      this.snake.hadTouchedBody() ||
+      this.hadTouchedBoundaries() ||
+      this.snake.hasTouchedGhostSnake(ghostSnakeStatus.positions)
+    );
   }
 
   update() {
@@ -47,7 +52,7 @@ class Game {
     this.ghostSnake.wrap();
     const foodStatus = this.food.getStatus();
     if (this.snake.hasFoodEaten(foodStatus.position)) {
-      this.snake.increaseLength(foodStatus.position);
+      this.snake.increaseLength();
       this.score.updateScore(foodStatus.point);
       this.food = getNewFood();
     }
