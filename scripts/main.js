@@ -124,8 +124,7 @@ const clearTimers = function(timerIds) {
   timerIds.forEach(id => clearInterval(id));
 };
 
-const initGame = function(game) {
-  const status = game.getStatus();
+const initGame = function(game, status) {
   createGrids();
   attachEventListeners(game);
   drawGame(status);
@@ -157,20 +156,21 @@ const createGame = function() {
 
 const main = function() {
   const game = createGame();
-  initGame(game);
+  let status = game.getStatus();
+  initGame(game, status);
   const timer = new Timer(TIME_LIMIT);
   const timerId = timer.start();
 
   const gameTimerId = setInterval(() => {
     game.update();
-    let status = game.getStatus();
-    eraseGame(status);
-    drawGame(status);
-
     if (isGameOver(game, timer)) {
       clearTimers([gameTimerId, timerId]);
       displayGameOver(status.score);
+      return;
     }
+    status = game.getStatus();
+    eraseGame(status);
+    drawGame(status);
   }, 100);
 };
 

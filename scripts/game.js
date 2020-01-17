@@ -21,53 +21,58 @@ const getNewFood = function() {
 };
 
 class Game {
+  #snake;
+  #ghostSnake;
+  #food;
+  #score;
   constructor(snake, ghostSnake, food, score) {
-    this.snake = snake;
-    this.ghostSnake = ghostSnake;
-    this.food = food;
-    this.score = score;
+    this.#snake = snake;
+    this.#ghostSnake = ghostSnake;
+    this.#food = food;
+    this.#score = score;
   }
 
-  hadTouchedBoundaries() {
-    const [headX, headY] = this.snake.head;
-    const hadTouchedVerticalWalls = headX == 0 || headX == 99;
-    const hadTouchedHorizontalWalls = headY == 0 || headY == 59;
-    return hadTouchedHorizontalWalls || hadTouchedVerticalWalls;
+  hasTouchedBoundaries() {
+    const [headX, headY] = this.#snake.head;
+    const hasTouchedVerticalWalls = headX < 0 || headX > 99;
+    const hasTouchedHorizontalWalls = headY < 0 || headY > 59;
+    return hasTouchedHorizontalWalls || hasTouchedVerticalWalls;
   }
 
   isOver() {
-    const ghostSnakeStatus = this.ghostSnake.getStatus();
+    const ghostSnakeStatus = this.#ghostSnake.getStatus();
     return (
-      this.snake.hadTouchedBody() ||
-      this.hadTouchedBoundaries() ||
-      this.snake.hasTouchedGhostSnake(ghostSnakeStatus.positions)
+      this.#snake.hasTouchedItself() ||
+      this.hasTouchedBoundaries() ||
+      this.#snake.hasTouchedGhostSnake(ghostSnakeStatus.positions)
     );
   }
 
   update() {
     const direction = getRandomDirection();
     this.turn('ghostSnake', direction);
-    this.snake.move();
-    this.ghostSnake.move();
-    this.ghostSnake.wrap();
-    const foodStatus = this.food.getStatus();
-    if (this.snake.hasFoodEaten(foodStatus.position)) {
-      this.snake.increaseLength();
-      this.score.updateScore(foodStatus.point);
-      this.food = getNewFood();
+    this.#snake.move();
+    this.#ghostSnake.move();
+    this.#ghostSnake.wrap();
+    const foodStatus = this.#food.getStatus();
+    if (this.#snake.hasFoodEaten(foodStatus.position)) {
+      this.#snake.grow();
+      this.#score.updateScore(foodStatus.point);
+      this.#food = getNewFood();
     }
   }
 
   getStatus() {
     return {
-      snake: this.snake.getStatus(),
-      ghostSnake: this.ghostSnake.getStatus(),
-      food: this.food.getStatus(),
-      score: this.score.getStatus()
+      snake: this.#snake.getStatus(),
+      ghostSnake: this.#ghostSnake.getStatus(),
+      food: this.#food.getStatus(),
+      score: this.#score.getStatus()
     };
   }
 
   turn(snakeType, direction) {
-    this[snakeType].turn(direction);
+    if (snakeType == 'snake') this.#snake.turn(direction);
+    if (snakeType == 'ghostSnake') this.#ghostSnake.turn(direction);
   }
 }

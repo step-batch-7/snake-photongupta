@@ -44,10 +44,10 @@ element {
 
 @keyframes specialFood {
   from {
-    box-shadow: 0px 0px 5px 5px red;
+    box-shasow: 0px 0px 5px 5px red;
   }
   to {
-    box-shadow: 0px 0px 1px 1px red;
+    box-shasow: 0px 0px 1px 1px red;
   }
 }
 

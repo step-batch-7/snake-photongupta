@@ -40,3 +40,5 @@
 --DONE-- * ghost snake should come back from opposite wall if touches the any of four walls
 
 --DONE-- * game will be over if snake touches ghost Snake
+
+--DONE-- * make every field private of every class  
