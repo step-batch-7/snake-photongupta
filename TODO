@@ -49,4 +49,6 @@
 
 --DONE-- * change the background of game
 
-* boost the speed of snake using alt key
+--DONE-- * boost the speed of snake using command key
+
+--DONE-- * reduce the speed of snake using control key

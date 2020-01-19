@@ -19,11 +19,13 @@ class Game {
   #ghostSnake;
   #food;
   #score;
+  #speedFactor;
   constructor(snake, ghostSnake, food, score) {
     this.#snake = snake;
     this.#ghostSnake = ghostSnake;
     this.#food = food;
     this.#score = score;
+    this.#speedFactor = 0;
   }
 
   hasTouchedBoundaries() {
@@ -87,8 +89,12 @@ class Game {
     };
   }
 
+  changeSpeedFactor(speedFactor) {
+    this.#speedFactor += speedFactor;
+  }
+
   moveSnakes() {
-    this.#snake.move();
+    this.#snake.move(this.#speedFactor);
     this.#ghostSnake.move();
   }
 

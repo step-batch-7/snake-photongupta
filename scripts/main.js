@@ -80,7 +80,6 @@ const updateTimeLeft = function(count) {
 
 const handleKeyPress = game => {
   const input = event.key;
-  console.log(input);
   switch (input) {
     case 'ArrowLeft':
       game.turn('snake', 'Left');
@@ -101,18 +100,31 @@ const handleKeyPress = game => {
     case 'Enter':
       alert('click on ok to resume');
       break;
+
+    case 'Meta':
+      game.changeSpeedFactor(0.2);
+      break;
+
+    case 'Control':
+      game.changeSpeedFactor(-0.2);
+      break;
   }
 };
 
 // const handleSpeed = function(game) {
 //   const input = event.key;
-// if (input == 'Meta') {
-// }
+//   if (input == 'Meta') {
+//     game.changeSpeedFactor(0.2);
+//   }
+//   if (input == 'Alt') {
+//     game.changeSpeedFactor(-0.2);
+//   }
+//   // alert(input);
 // };
 
 const attachEventListeners = game => {
-  document.body.onkeydown = handleKeyPress.bind(null, game);
-  // document.body.onkeypress = handleSpeed.bind(null, game);
+  window.addEventListener('keydown', handleKeyPress.bind(null, game));
+  // window.addEventListener('keypress', handleSpeed.bind(null, game));
 };
 
 const drawGame = function(status) {
@@ -150,7 +162,8 @@ const createGame = function() {
       [42, 25]
     ],
     new Direction(EAST),
-    'snake'
+    'snake',
+    1
   );
   const ghostSnake = new Snake(
     [
@@ -159,7 +172,8 @@ const createGame = function() {
       [42, 30]
     ],
     new Direction(SOUTH),
-    'ghost'
+    'ghost',
+    1
   );
   const food = new Food([44, 55], 'normal');
   const score = new Score(INITIAL_SCORE);
@@ -183,7 +197,7 @@ const main = function() {
     status = game.getStatus();
     eraseGame(status);
     drawGame(status);
-  }, 100);
+  }, 50);
 };
 
 window.onload = main;

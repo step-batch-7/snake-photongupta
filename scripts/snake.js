@@ -7,11 +7,15 @@ class Snake {
   #direction;
   #type;
   #previousTail;
-  constructor(positions, direction, type) {
+  #speedFactor;
+  #speed;
+  constructor(positions, direction, type, speedFactor) {
     this.#positions = positions.slice();
     this.#direction = direction;
     this.#type = type;
     this.#previousTail = [0, 0];
+    this.#speedFactor = speedFactor;
+    this.#speed = 0;
   }
 
   get location() {
@@ -31,11 +35,15 @@ class Snake {
     this.#direction[turn]();
   }
 
-  move() {
-    const [headX, headY] = this.head;
-    this.#previousTail = this.#positions.shift();
+  move(speedFactor) {
     const [deltaX, deltaY] = this.#direction.delta;
-    this.#positions.push([headX + deltaX, headY + deltaY]);
+    let [headX, headY] = this.head;
+    this.#speed = this.#speed + (speedFactor || this.#speedFactor);
+    if (this.#speed > 2) {
+      this.#previousTail = this.#positions.shift();
+      this.#positions.push([headX + deltaX, headY + deltaY]);
+      this.#speed = 0;
+    }
   }
 
   grow() {
