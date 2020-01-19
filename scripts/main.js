@@ -12,7 +12,7 @@ const TIME_LIMIT = 120;
 const INITIAL_SCORE = 0;
 
 const getGrid = () => document.getElementById(GRID_ID);
-const getCellId = (colId, rowId) => colId + '_' + rowId;
+const getCellId = (colId, rowId) => 'cell' + colId + '_' + rowId;
 
 const getCell = (colId, rowId) => {
   return document.getElementById(getCellId(colId, rowId));
@@ -82,19 +82,19 @@ const handleKeyPress = game => {
   const input = event.key;
   switch (input) {
     case 'ArrowLeft':
-      game.turn('snake', 'turnLeft');
+      game.turn('snake', 'Left');
       break;
 
     case 'ArrowRight':
-      game.turn('snake', 'turnRight');
+      game.turn('snake', 'Right');
       break;
 
     case 'ArrowUp':
-      game.turn('snake', 'turnUp');
+      game.turn('snake', 'Up');
       break;
 
     case 'ArrowDown':
-      game.turn('snake', 'turnDown');
+      game.turn('snake', 'Down');
       break;
   }
 };
@@ -149,7 +149,7 @@ const createGame = function() {
     new Direction(SOUTH),
     'ghost'
   );
-  const food = new Food([76, 35], 'normal');
+  const food = new Food([44, 55], 'normal');
   const score = new Score(INITIAL_SCORE);
   return new Game(snake, ghostSnake, food, score);
 };

@@ -1,8 +1,3 @@
-const getRandomDirection = function() {
-  const directions = ['turnLeft', 'turnRight', 'turnUp', 'turnDown'];
-  return directions[Math.round(Math.random() * 3)];
-};
-
 const getRandomFoodType = function() {
   const types = ['normal', 'special'];
   return types[Math.floor(Math.random() * 2)];
@@ -48,16 +43,35 @@ class Game {
     );
   }
 
+  getFoodDirection(foodStatus) {
+    const [foodX, foodY] = foodStatus.position;
+    const [headX, headY] = this.#ghostSnake.head;
+    let direction = 'Down';
+    if (foodX < headX && foodY == headY) {
+      direction = 'Left';
+    }
+    if (foodX > headX && foodY == headY) {
+      direction = 'Right';
+    }
+    if (foodX == headX && foodY < headY) {
+      direction = 'Up';
+    }
+    return direction;
+  }
+
   update() {
-    const direction = getRandomDirection();
-    this.turn('ghostSnake', direction);
-    this.#snake.move();
-    this.#ghostSnake.move();
-    this.#ghostSnake.wrap();
     const foodStatus = this.#food.getStatus();
+    const direction = this.getFoodDirection(foodStatus);
+    this.turn('ghostSnake', direction);
+    this.moveSnakes();
+    this.#ghostSnake.wrap();
     if (this.#snake.hasFoodEaten(foodStatus.position)) {
       this.#snake.grow();
       this.#score.updateScore(foodStatus.point);
+      this.#food = createFood();
+    }
+    if (this.#ghostSnake.hasFoodEaten(foodStatus.position)) {
+      this.#ghostSnake.grow();
       this.#food = createFood();
     }
   }
@@ -69,6 +83,11 @@ class Game {
       food: this.#food.getStatus(),
       score: this.#score.getStatus()
     };
+  }
+
+  moveSnakes() {
+    this.#snake.move();
+    this.#ghostSnake.move();
   }
 
   turn(snakeType, direction) {

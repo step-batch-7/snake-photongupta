@@ -27,7 +27,8 @@ class Snake {
   }
 
   turn(direction) {
-    this.#direction[direction]();
+    const turn = `turn${direction}`;
+    this.#direction[turn]();
   }
 
   move() {
