@@ -25,7 +25,7 @@ class Game {
     this.#ghostSnake = ghostSnake;
     this.#food = food;
     this.#score = score;
-    this.#speedFactor = 0;
+    this.#speedFactor = 2;
   }
 
   hasTouchedBoundaries() {
@@ -90,7 +90,12 @@ class Game {
   }
 
   changeSpeedFactor(speedFactor) {
-    this.#speedFactor += speedFactor;
+    if (speedFactor == 1 && this.#speedFactor < 5) {
+      this.#speedFactor += speedFactor;
+    }
+    if (speedFactor == -1 && this.#speedFactor > 0) {
+      this.#speedFactor += speedFactor;
+    }
   }
 
   moveSnakes() {

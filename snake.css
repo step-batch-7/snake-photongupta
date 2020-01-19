@@ -71,7 +71,7 @@ element {
   position: absolute;
   top: 0;
   width: 70vw;
-  height: 50vw;
+  height: 70vw;
   margin-top: -100vw;
   margin-left: 15vw;
   background-image: url(img/gameOver.jpg);

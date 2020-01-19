@@ -39,7 +39,7 @@ class Snake {
     const [deltaX, deltaY] = this.#direction.delta;
     let [headX, headY] = this.head;
     this.#speed = this.#speed + (speedFactor || this.#speedFactor);
-    if (this.#speed > 2) {
+    if (this.#speed > 4) {
       this.#previousTail = this.#positions.shift();
       this.#positions.push([headX + deltaX, headY + deltaY]);
       this.#speed = 0;
