@@ -42,3 +42,11 @@
 --DONE-- * game will be over if snake touches ghost Snake
 
 --DONE-- * make every field private of every class  
+
+--DONE-- * allow ghost snake to go to the food
+
+--DONE-- * allow ghost snake to eat the food 
+
+--DONE-- * change the background of game
+
+* boost the speed of snake using alt key

@@ -1,6 +1,5 @@
 const getRandomFoodType = function() {
-  const types = ['normal', 'special'];
-  return types[Math.floor(Math.random() * 2)];
+  return Math.floor(Math.random() * 5) > 3 ? 'special' : 'normal';
 };
 
 const getRandomFoodPosition = function() {
@@ -47,14 +46,17 @@ class Game {
     const [foodX, foodY] = foodStatus.position;
     const [headX, headY] = this.#ghostSnake.head;
     let direction = 'Down';
-    if (foodX < headX && foodY == headY) {
+    if (foodX < headX) {
       direction = 'Left';
     }
-    if (foodX > headX && foodY == headY) {
+    if (foodX > headX) {
       direction = 'Right';
     }
-    if (foodX == headX && foodY < headY) {
+    if (foodY < headY) {
       direction = 'Up';
+    }
+    if (foodY > headY) {
+      direction = 'Down';
     }
     return direction;
   }

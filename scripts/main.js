@@ -43,7 +43,7 @@ const displayGameOver = function(scoreBoard) {
   const panel = document.getElementsByClassName('gameOver');
   const panelContent = document.getElementsByClassName('status');
   panel[0].style.marginTop = `0vw`;
-  panelContent[0].innerText = `GameOver...\nYour score:${scoreBoard}`;
+  panelContent[0].innerText = `Your score:${scoreBoard}`;
 };
 
 const eraseTail = function(snake) {
@@ -80,6 +80,7 @@ const updateTimeLeft = function(count) {
 
 const handleKeyPress = game => {
   const input = event.key;
+  console.log(input);
   switch (input) {
     case 'ArrowLeft':
       game.turn('snake', 'Left');
@@ -96,11 +97,22 @@ const handleKeyPress = game => {
     case 'ArrowDown':
       game.turn('snake', 'Down');
       break;
+
+    case 'Enter':
+      alert('click on ok to resume');
+      break;
   }
 };
 
+// const handleSpeed = function(game) {
+//   const input = event.key;
+// if (input == 'Meta') {
+// }
+// };
+
 const attachEventListeners = game => {
   document.body.onkeydown = handleKeyPress.bind(null, game);
+  // document.body.onkeypress = handleSpeed.bind(null, game);
 };
 
 const drawGame = function(status) {

@@ -1,5 +1,7 @@
 h1 {
   text-align: center;
+  font-size: 60px;
+  color: rgb(250, 175, 77);
 }
 
 element {
@@ -11,7 +13,8 @@ element {
   display: flex;
   margin: 0 auto;
   flex-wrap: wrap;
-  border: 1px solid black;
+  border: 1px solid darkgreen;
+  background-color: black;
 }
 
 .cell {
@@ -20,12 +23,14 @@ element {
 }
 
 .snake {
-  background-color: black;
+  background-color: rgb(49, 178, 230);
   border-radius: 3px;
+  /* transition: 5ms; */
 }
 
 .ghost {
-  background-color: gray;
+  background-color: rgb(247, 127, 47);
+  border-radius: 3px;
 }
 
 .normal {
@@ -35,9 +40,9 @@ element {
 
 .special {
   border-radius: 50px;
-  background-color: blue;
+  background-color: rgb(154, 47, 255);
   animation-name: specialFood;
-  animation-duration: 0.7s;
+  animation-duration: 0.5s;
   animation-iteration-count: infinite;
   animation-direction: alternate;
 }
@@ -66,18 +71,19 @@ element {
   z-index: 2;
   position: absolute;
   top: 0;
-  width: 50vw;
+  width: 70vw;
   height: 50vw;
   margin-top: -100vw;
-  margin-left: 25vw;
-  background-color: gray;
+  margin-left: 15vw;
+  background-image: url(img/gameOver.jpg);
   transition: 1s;
   font-size: 100px;
-  opacity: 0.8;
 }
 
 .status {
+  margin-top: 530px;
   text-align: center;
+  color: rgba(91, 131, 219, 0.883);
 }
 
 .gameStatus {
